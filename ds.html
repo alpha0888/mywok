@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raven's Requiem | Gothic Musical Instruments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./jh.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0a0a',
+                        darker: '#050505',
+                        accent: '#8a0303',
+                        gray: {
+                            900: '#121212',
+                            800: '#1a1a1a',
+                            700: '#232323',
+                            600: '#2c2c2c',
+                            500: '#3a3a3a',
+                            400: '#4a4a4a',
+                        }
+                    },
+                    fontFamily: {
+                        gothic: ['Copperplate Gothic', 'Georgia', 'serif'],
+                        main: ['Helvetica', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Mouse Trail Effect -->
+    <style>
+        .cursor-trail {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.3), rgba(138, 3, 3, 0.1) 50%, transparent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+            mix-blend-mode: screen;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const numTrails = 12;
+            const trails = [];
+
+            // Create trail elements
+            for (let i = 0; i < numTrails; i++) {
+                const trail = document.createElement('div');
+                trail.className = 'cursor-trail';
+                trail.style.opacity = 1 - (i / numTrails);
+                trail.style.width = trail.style.height = 20 + (i * 2) + 'px';
+                document.body.appendChild(trail);
+                trails.push({
+                    element: trail,
+                    x: 0,
+                    y: 0
+                });
+            }
+
+            let mouseX = 0;
+            let mouseY = 0;
+            let isMouseDown = false;
+
+            // Mouse move handler
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            // Mouse down/up handlers
+            document.addEventListener('mousedown', () => {
+                isMouseDown = true;
+                trails.forEach(trail => {
+                    trail.element.style.background = 'radial-gradient(circle, rgba(255, 0, 0, 0.5), rgba(138, 3, 3, 0.3) 50%, transparent)';
+                });
+            });
+
+            document.addEventListener('mouseup', () => {
+                isMouseDown = false;
+                trails.forEach(trail => {
+                    trail.element.style.background = 'radial-gradient(circle, rgba(255, 0, 0, 0.3), rgba(138, 3, 3, 0.1) 50%, transparent)';
+                });
+            });
+
+            // Animation loop
+            function animate() {
+                for (let i = 0; i < trails.length; i++) {
+                    const trail = trails[i];
+                    const nextTrail = trails[i + 1] || { x: mouseX, y: mouseY };
+
+                    trail.x += (nextTrail.x - trail.x) * 0.3;
+                    trail.y += (nextTrail.y - trail.y) * 0.3;
+
+                    trail.element.style.transform = `translate(${trail.x}px, ${trail.y}px)`;
+                }
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        });
+    </script>
+
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-darker border-b border-gray-800 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="ml-3">
+                        <h1 class="text-xl font-bold tracking-wider text-white">RAVEN'S REQUIEM</h1>
+                        <p class="text-xs text-gray-400 tracking-widest">GOTHIC MUSICAL INSTRUMENTS</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="nav-link text-white hover:text-accent transition-colors">Home</a>
+                    <a href="#guitars" class="nav-link text-white hover:text-accent transition-colors">Guitars</a>
+                    <a href="#instruments" class="nav-link text-white hover:text-accent transition-colors">Instruments</a>
+                    <a href="#accessories" class="nav-link text-white hover:text-accent transition-colors">Accessories</a>
+                    <a href="#about" class="nav-link text-white hover:text-accent transition-colors">About</a>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Cart and Search -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button class="text-white hover:text-accent transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                    <button class="text-white hover:text-accent transition-colors relative">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                        <span class="absolute -top-2 -right-2 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 left-0 h-full w-64 bg-gray-900 z-50 shadow-lg pt-20 px-4">
+        <button id="close-menu" class="absolute top-4 right-4 text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <nav class="flex flex-col space-y-4">
+            <a href="#" class="text-white hover:text-accent transition-colors py-2 border-b border-gray-800">Home</a>
+            <a href="#guitars" class="text-white hover:text-accent transition-colors py-2 border-b border-gray-800">Guitars</a>
+            <a href="#instruments" class="text-white hover:text-accent transition-colors py-2 border-b border-gray-800">Instruments</a>
+            <a href="#accessories" class="text-white hover:text-accent transition-colors py-2 border-b border-gray-800">Accessories</a>
+            <a href="#about" class="text-white hover:text-accent transition-colors py-2 border-b border-gray-800">About</a>
+        </nav>
+        <div class="mt-8 flex justify-around">
+            <button class="text-white hover:text-accent transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </button>
+            <button class="text-white hover:text-accent transition-colors relative">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+                <span class="absolute -top-2 -right-2 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative h-[80vh] overflow-hidden">
+        <div class="absolute inset-0 bg-black">
+            <!-- Background gradient -->
+            <div class="h-full w-full bg-gradient-to-br from-black via-red-900 to-black opacity-20"></div>
+
+            <!-- Decorative Background Image -->
+            <div class="absolute right-0 top-1/2 transform -translate-y-1/2">
+                <img src="./pnghut_910fdad2ca5602310712a5889589e944.png"
+                     alt="Decorative background"
+                     class="w-[800px] h-[800px] opacity-5"
+                     style="filter: invert(1);">
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 h-full flex items-center relative z-10">
+            <div class="max-w-2xl">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">Embrace the Darkness<br>with Gothic Sound</h1>
+                <p class="text-xl text-gray-300 mb-8">Discover our collection of premium guitars and musical instruments designed for those who dwell in the shadows.</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#guitars" class="btn-gothic px-8 py-3 text-white font-semibold rounded-sm text-center">
+                        Explore Guitars
+                    </a>
+                    <a href="#about" class="px-8 py-3 border border-gray-600 text-white hover:border-accent hover:text-accent transition-colors rounded-sm text-center">
+                        Our Story
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom decorative border -->
+        <div class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-dark"></div>
+    </section>
+
+    <!-- Featured Product -->
+    <section class="py-16 bg-dark">
+        <div class="container mx-auto px-4">
+            <div class="crow-divider">
+                <svg class="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,2L1,21H23L12,2M12,6L19.5,19H4.5L12,6Z"/>
+                </svg>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center text-white mb-12">Featured Collection</h2>
+
+            <div class="featured-product gothic-border rounded-sm overflow-hidden bg-gray-900">
+                <div class="grid md:grid-cols-2">
+                    <div class="p-8 md:p-12 featured-content order-2 md:order-1 flex flex-col justify-center">
+                        <span class="text-accent text-sm font-semibold tracking-wider mb-2">LIMITED EDITION</span>
+                        <h3 class="text-3xl font-bold text-white mb-4">The Raven's Wing</h3>
+                        <p class="text-gray-300 mb-6">A masterpiece of gothic craftsmanship, this electric guitar features a sleek black finish with blood-red accents, skull inlays, and delivers a hauntingly powerful sound that will pierce through the darkness.</p>
+                        <div class="mb-6">
+                            <span class="text-2xl font-bold text-white">$1,299.99</span>
+                            <span class="text-gray-400 line-through ml-2">$1,499.99</span>
+                        </div>
+                        <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                            <button class="btn-gothic px-6 py-3 text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                            <button class="px-6 py-3 border border-gray-600 text-white hover:border-accent hover:text-accent transition-colors rounded-sm">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="featured-content order-1 md:order-2 relative h-[400px]">
+                        <img src="./Leonardo_Vision_XL_A_highly_detailed_gothic_electric_guitar_da_1 (1).jpg"
+                             alt="The Raven's Wing Guitar"
+                             class="absolute inset-0 w-full h-full object-contain p-8 bg-gray-800 transition-transform duration-300 hover:scale-105">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guitar Collection -->
+    <section id="guitars" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="crow-divider">
+                <svg class="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,2L1,21H23L12,2M12,6L19.5,19H4.5L12,6Z"/>
+                </svg>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center text-white mb-4">Gothic Guitars</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12">Explore our collection of meticulously crafted guitars designed for those who embrace the darkness. Each instrument is a work of art that delivers haunting melodies.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Guitar 1 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300 hover:shadow-xl">
+                    <div class="relative h-80 bg-gray-700 overflow-hidden">
+                        <img src="./Leonardo_Vision_XL_A_sleek_red_metallic_electric_guitar_shiny_1 (1).jpg"
+                             alt="Nightshade Electric Guitar"
+                             class="absolute inset-0 w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-4 border-t border-gray-600">
+                        <h3 class="text-lg font-bold text-white mb-1">Nightshade Electric</h3>
+                        <p class="text-sm text-gray-400 mb-3">Matte black finish with blood-red binding and skull inlays.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$899.99</span>
+                            <button class="btn-gothic px-4 py-2 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guitar 2 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="relative h-80 bg-gray-700 overflow-hidden">
+                        <img src="./Leonardo_Vision_XL_A_futuristic_icy_blue_electric_guitar_with_0.jpg"
+                             alt="Crimson Bass Guitar"
+                             class="absolute inset-0 w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-4 border-t border-gray-600">
+                        <h3 class="text-lg font-bold text-white mb-1">Crimson Bass</h3>
+                        <p class="text-sm text-gray-400 mb-3">Deep crimson finish with gothic-inspired hardware and bat inlays.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$1,099.99</span>
+                            <button class="btn-gothic px-4 py-2 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guitar 3 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="relative h-80 bg-gray-700 overflow-hidden">
+                        <img src="./Leonardo_Vision_XL_An_emerald_green_electric_guitar_with_vinta_0.jpg"
+                             alt="Graveyard Acoustic Guitar"
+                             class="absolute inset-0 w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-4 border-t border-gray-600">
+                        <h3 class="text-lg font-bold text-white mb-1">Graveyard Acoustic</h3>
+                        <p class="text-sm text-gray-400 mb-3">Dark wood finish with gothic rosette and tombstone-inspired inlays.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$749.99</span>
+                            <button class="btn-gothic px-4 py-2 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guitar 4 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="relative h-80 bg-gray-700 overflow-hidden">
+                        <img src="./Leonardo_Vision_XL_A_dark_purple_glamrock_electric_guitar_glit_1.jpg"
+                             alt="Demon Wing V Guitar"
+                             class="absolute inset-0 w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-4 border-t border-gray-600">
+                        <h3 class="text-lg font-bold text-white mb-1">Demon Wing V</h3>
+                        <p class="text-sm text-gray-400 mb-3">Aggressive flying V design with demonic symbols and blood-red hardware.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$1,199.99</span>
+                            <button class="btn-gothic px-4 py-2 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guitar 5 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="relative h-80 bg-gray-700 overflow-hidden">
+                        <img src="./Leonardo_Vision_XL_A_minimalist_white_electric_guitar_with_cle_3.jpg"
+                             alt="Phantom Explorer Guitar"
+                             class="absolute inset-0 w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-4 border-t border-gray-600">
+                        <h3 class="text-lg font-bold text-white mb-1">Phantom Explorer</h3>
+                        <p class="text-sm text-gray-400 mb-3">Sleek explorer design with ghostly white binding and phantom inlays.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$1,299.99</span>
+                            <button class="btn-gothic px-4 py-2 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guitar 6 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="relative h-80 bg-gray-700 overflow-hidden">
+                        <img src="./Leonardo_Vision_XL_A_gunmetal_gray_electric_guitar_with_indust_1.jpg"
+                             alt="Coffin Shredder Guitar"
+                             class="absolute inset-0 w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-4 border-t border-gray-600">
+                        <h3 class="text-lg font-bold text-white mb-1">Coffin Shredder</h3>
+                        <p class="text-sm text-gray-400 mb-3">Unique coffin-shaped body with cross inlays and matte black finish.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$1,499.99</span>
+                            <button class="btn-gothic px-4 py-2 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <button class="btn-gothic px-8 py-3 text-white font-semibold rounded-sm">
+                    View All Guitars
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Instruments -->
+    <section id="instruments" class="py-16 bg-dark">
+        <div class="container mx-auto px-4">
+            <div class="crow-divider">
+                <svg class="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,2L1,21H23L12,2M12,6L19.5,19H4.5L12,6Z"/>
+                </svg>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center text-white mb-4">Dark Instruments</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12">Expand your gothic musical arsenal with our selection of premium instruments designed for those who dwell in the shadows.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Instrument 1 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="h-48 bg-gray-700 flex items-center justify-center p-4">
+                        <img src="images/phantom-keyboard.jpg" alt="Phantom Keyboard" class="max-h-full object-contain">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold text-white mb-1">Phantom Keyboard</h3>
+                        <p class="text-gray-400 text-sm mb-3">61-key synth with gothic sound presets.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$649.99</span>
+                            <button class="btn-gothic px-3 py-1 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instrument 2 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="h-48 bg-gray-700 flex items-center justify-center p-4">
+                        <img src="images/crypt-drums.jpg" alt="Crypt Drums" class="max-h-full object-contain">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold text-white mb-1">Crypt Drums</h3>
+                        <p class="text-gray-400 text-sm mb-3">Electronic drum kit with skull motifs.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$899.99</span>
+                            <button class="btn-gothic px-3 py-1 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instrument 3 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="h-48 bg-gray-700 flex items-center justify-center p-4">
+                        <img src="images/mourning-violin.jpg" alt="Mourning Violin" class="max-h-full object-contain">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold text-white mb-1">Mourning Violin</h3>
+                        <p class="text-gray-400 text-sm mb-3">Dark-stained with gothic-inspired f-holes.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$799.99</span>
+                            <button class="btn-gothic px-3 py-1 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instrument 4 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="h-48 bg-gray-700 flex items-center justify-center p-4">
+                        <img src="images/banshee-microphone.jpg" alt="Banshee Microphone" class="max-h-full object-contain">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold text-white mb-1">Banshee Microphone</h3>
+                        <p class="text-gray-400 text-sm mb-3">Professional mic with gothic stand design.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-white">$349.99</span>
+                            <button class="btn-gothic px-3 py-1 text-sm text-white font-semibold rounded-sm">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 text-center">
+                <button class="btn-gothic px-8 py-3 text-white font-semibold rounded-sm">
+                    View All Instruments
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accessories -->
+    <section id="accessories" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="crow-divider">
+                <svg class="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,2L1,21H23L12,2M12,6L19.5,19H4.5L12,6Z"/>
+                </svg>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center text-white mb-4">Dark Accessories</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12">Complete your gothic musical arsenal with our premium accessories designed to enhance your dark musical journey.</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Accessory 1 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300 hover:shadow-xl">
+                    <div class="relative h-32 bg-gray-700">
+                        <img src="images/accessories/raven-picks.jpg"
+                             alt="Raven Picks"
+                             srcset="images/accessories/raven-picks-200.jpg 200w,
+                                     images/accessories/raven-picks-400.jpg 400w"
+                             sizes="(max-width: 768px) 200px, 400px"
+                             loading="lazy"
+                             class="absolute inset-0 w-full h-full object-contain p-2 transition-transform duration-300 hover:scale-105">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="text-sm font-bold text-white mb-1">Raven Picks</h3>
+                        <p class="text-xs text-gray-400 mb-2">Set of 10 gothic picks.</p>
+                        <span class="text-sm font-bold text-white">$12.99</span>
+                    </div>
+                </div>
+
+                <!-- Accessory 2 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="h-32 bg-gray-700 flex items-center justify-center p-4">
+                        <img src="images/coffin-strap.jpg" alt="Coffin Strap" class="max-h-full object-contain">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="text-sm font-bold text-white mb-1">Coffin Strap</h3>
+                        <p class="text-xs text-gray-400 mb-2">Leather with coffin designs.</p>
+                        <span class="text-sm font-bold text-white">$39.99</span>
+                    </div>
+                </div>
+
+                <!-- Accessory 3 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="h-32 bg-gray-700 flex items-center justify-center p-4">
+                        <img src="images/crypt-case.jpg" alt="Crypt Case" class="max-h-full object-contain">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="text-sm font-bold text-white mb-1">Crypt Case</h3>
+                        <p class="text-xs text-gray-400 mb-2">Hardshell with gothic lining.</p>
+                        <span class="text-sm font-bold text-white">$129.99</span>
+                    </div>
+                </div>
+
+                <!-- Accessory 4 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="h-32 bg-gray-700 flex items-center justify-center p-4">
+                        <img src="images/blood-drive.jpg" alt="Blood Drive" class="max-h-full object-contain">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="text-sm font-bold text-white mb-1">Blood Drive</h3>
+                        <p class="text-xs text-gray-400 mb-2">Distortion pedal with red LEDs.</p>
+                        <span class="text-sm font-bold text-white">$149.99</span>
+                    </div>
+                </div>
+
+                <!-- Accessory 5 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="h-32 bg-gray-700 flex items-center justify-center p-4">
+                        <img src="images/crimson-strings.jpg" alt="Crimson Strings" class="max-h-full object-contain">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="text-sm font-bold text-white mb-1">Crimson Strings</h3>
+                        <p class="text-xs text-gray-400 mb-2">Heavy gauge with red coating.</p>
+                        <span class="text-sm font-bold text-white">$14.99</span>
+                    </div>
+                </div>
+
+                <!-- Accessory 6 -->
+                <div class="product-card gothic-border bg-gray-800 rounded-sm overflow-hidden transition-all duration-300">
+                    <div class="h-32 bg-gray-700 flex items-center justify-center p-4">
+                        <img src="images/phantom-phones.jpg" alt="Phantom Phones" class="max-h-full object-contain">
+                    </div>
+                    <div class="p-3">
+                        <h3 class="text-sm font-bold text-white mb-1">Phantom Phones</h3>
+                        <p class="text-xs text-gray-400 mb-2">Studio-quality headphones.</p>
+                        <span class="text-sm font-bold text-white">$199.99</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 text-center">
+                <button class="btn-gothic px-8 py-3 text-white font-semibold rounded-sm">
+                    View All Accessories
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-dark relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0,0 L100,0 L100,100 L0,100 Z" fill="url(#newsletter-gradient)"></path>
+                <defs>
+                    <linearGradient id="newsletter-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#000000" />
+                        <stop offset="50%" stop-color="#1a0000" />
+                        <stop offset="100%" stop-color="#000000" />
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <!-- Decorative elements -->
+            <svg class="absolute top-10 left-1/4 w-24 h-24 text-gray-800 opacity-20" viewBox="0 0 100 100" fill="currentColor">
+                <path d="M75,25 C85,15 95,20 95,25 C95,30 85,35 80,30 C75,25 70,35 65,40 C60,45 55,45 50,45 C45,45 40,45 35,40 C30,35 25,25 20,30 C15,35 5,30 5,25 C5,20 15,15 25,25 L50,50 L75,25 Z"/>
+            </svg>
+
+            <svg class="absolute bottom-10 right-1/4 w-32 h-32 text-gray-800 opacity-20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,2L1,21H23L12,2M12,6L19.5,19H4.5L12,6Z"/>
+            </svg>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-2xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-white mb-4">Join the Darkness</h2>
+                <p class="text-gray-300 mb-8">Subscribe to our newsletter for exclusive offers, new releases, and gothic musical inspiration.</p>
+
+                <form class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 max-w-lg mx-auto">
+                    <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-sm focus:outline-none focus:border-accent">
+                    <button type="submit" class="btn-gothic px-6 py-3 text-white font-semibold rounded-sm whitespace-nowrap">
+                        Subscribe
+                    </button>
+                </form>
+
+                <p class="text-gray-500 text-sm mt-4">By subscribing, you agree to receive marketing emails. You can unsubscribe at any time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="crow-divider">
+                <svg class="w-8 h-8 text-accent" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,2L1,21H23L12,2M12,6L19.5,19H4.5L12,6Z"/>
+                </svg>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-4">Our Dark Legacy</h2>
+                    <p class="text-gray-300 mb-6">Raven's Requiem was born from the shadows, founded by musicians who embrace the darkness and seek to create instruments that resonate with the gothic soul. Our passion for craftsmanship and dark aesthetics drives us to create musical instruments that are both visually stunning and sonically powerful.</p>
+                    <p class="text-gray-300 mb-6">Each instrument is meticulously designed with gothic-inspired elements, from skull inlays to coffin shapes, creating pieces that are as much works of art as they are tools for musical expression.</p>
+                    <p class="text-gray-300 mb-8">Our team of master craftsmen combines traditional techniques with modern innovation to deliver instruments that not only look hauntingly beautiful but also produce the deep, rich tones that gothic and metal musicians crave.</p>
+
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-accent hover:text-white transition-colors">
+                            <i class="fab fa-facebook-f w-6 h-6"></i>
+                        </a>
+                        <a href="#" class="text-accent hover:text-white transition-colors">
+                            <i class="fab fa-twitter w-6 h-6"></i>
+                        </a>
+                        <a href="#" class="text-accent hover:text-white transition-colors">
+                            <i class="fab fa-instagram w-6 h-6"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="mouse-cursor" style="
+        width: 80px;
+        height: 80px;
+        background: radial-gradient(
+            circle,
+            rgba(255, 0, 0, 0.25) 0%,
+            rgba(255, 0, 0, 0.15) 25%,
+            rgba(138, 3, 3, 0.1) 50%,
+            rgba(138, 3, 3, 0.05) 75%,
+            transparent 100%
+        );
+        position: fixed;
+        pointer-events: none;
+        border-radius: 50%;
+        z-index: 10000;
+        mix-blend-mode: screen;
+        transform: translate(-50%, -50%);
+        transition: all 0.2s ease;
+        filter: blur(5px);
+    "></div>
+
+    <script>
+        const cursor = document.getElementById('mouse-cursor');
+        let isMoving = false;
+        let moveTimeout;
+
+        document.addEventListener('mousemove', (e) => {
+            requestAnimationFrame(() => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+
+                if (!isMoving) {
+                    isMoving = true;
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1.2)';
+                }
+
+                clearTimeout(moveTimeout);
+                moveTimeout = setTimeout(() => {
+                    isMoving = false;
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                }, 100);
+            });
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            cursor.style.background = `radial-gradient(
+                circle,
+                rgba(255, 0, 0, 0.35) 0%,
+                rgba(255, 0, 0, 0.25) 25%,
+                rgba(138, 3, 3, 0.15) 50%,
+                rgba(138, 3, 3, 0.1) 75%,
+                transparent 100%
+            )`;
+            cursor.style.filter = 'blur(8px)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+            cursor.style.background = `radial-gradient(
+                circle,
+                rgba(255, 0, 0, 0.25) 0%,
+                rgba(255, 0, 0, 0.15) 25%,
+                rgba(138, 3, 3, 0.1) 50%,
+                rgba(138, 3, 3, 0.05) 75%,
+                transparent 100%
+            )`;
+            cursor.style.filter = 'blur(5px)';
+        });
+    </script>
+</body>
+</html>
